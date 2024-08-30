@@ -12,6 +12,11 @@ function love.load()
     biribiri:CreateAndStartTimer(0.25, function ()
         print("ha")
     end)
+    
+    local mytable = {1,2,3}
+    print(#mytable)
+    table.clear(mytable)
+    print(#mytable)
 
     timer:Start()
 end

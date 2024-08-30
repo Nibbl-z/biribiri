@@ -48,3 +48,9 @@ function biribiri:Update(dt)
         end
     end
 end
+
+_G.table.clear = function (t)
+    for i, v in pairs(t) do
+        table.remove(t, i)
+    end
+end
