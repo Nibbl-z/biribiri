@@ -49,8 +49,19 @@ function biribiri:Update(dt)
     end
 end
 
-_G.table.clear = function (t)
-    for i, v in pairs(t) do
-        table.remove(t, i)
+table.clear = function (t)
+    for _, v in pairs(t) do
+        table.remove(t, #t - 1)
     end
+    table.remove(t, 1)
+end
+
+table.find = function (haystack, needle)
+    for i, v in pairs(haystack) do
+        if v == needle then
+            return i
+        end
+    end
+
+    return nil
 end

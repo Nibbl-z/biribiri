@@ -13,10 +13,14 @@ function love.load()
         print("ha")
     end)
     
-    local mytable = {1,2,3}
-    print(#mytable)
+    local mytable = {1,3,2}
+    
+    --for _, v in pairs(mytable) do print(v) end
+    
+    print(table.find(mytable, 3))
+    
     table.clear(mytable)
-    print(#mytable)
+    --for _, v in pairs(mytable) do print(v) end
 
     timer:Start()
 end
