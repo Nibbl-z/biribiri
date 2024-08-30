@@ -2,9 +2,13 @@ require "biribiri"
 
 function love.load()
     local timer = biribiri:CreateTimer(2, function ()
-        print("Hello!!")
+        print("gggup")
     end)
-
+    
+    biribiri:CreateAndStartTimer(0.5, function ()
+        print("Hello!!")
+    end, true)
+    
     timer:Start()
 end
 

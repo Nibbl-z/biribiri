@@ -1,9 +1,10 @@
 local timer = {}
 
-function timer:New(duration, call)
+function timer:New(duration, call, loop)
     o = {
         Duration = duration,
         Function = call,
+        Looped = loop,
         
         Started = false,
         StartTime = 0,
@@ -15,11 +16,13 @@ function timer:New(duration, call)
 
     setmetatable(o, self)
     self.__index = self
-
+    
     return o
 end
 
 function timer:Start()
+    if self.Started == true then return end
+
     self.Started = true
     self.StartTime = love.timer.getTime()
 end

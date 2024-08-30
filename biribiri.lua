@@ -4,11 +4,20 @@ local Timer = require("biribiri.timer")
 
 local activeTimers = {}
 
-function biribiri:CreateTimer(duration, call)
-    local t = Timer:New(duration, call)
-
+function biribiri:CreateTimer(duration, call, loop)
+    local t = Timer:New(duration, call, loop or false)
+    
     table.insert(activeTimers, t)
+    
+    return t
+end
 
+function biribiri:CreateAndStartTimer(duration, call, loop)
+    local t = Timer:New(duration, call, loop or false)
+    
+    table.insert(activeTimers, t)
+    t:Start()
+    
     return t
 end
 
@@ -18,9 +27,14 @@ function biribiri:Update(dt)
             if love.timer.getTime() >= timer.StartTime + timer.PausedDuration + timer.Duration then
                 timer.Function()
                 timer.Finished = true
+                timer.Started = false
+                timer.PausedDuration = 0
+                
+                if timer.Looped then
+                    timer.Finished = false
+                    timer:Start()
+                end
             end
         end
     end
 end
-
---biribiri.
