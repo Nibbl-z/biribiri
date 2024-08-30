@@ -1,3 +1,10 @@
+---@class Timer
+---@field Duration number: How long the timer lasts
+---@field Looped boolean: Should the timer loop when it ends?
+---@field Start function: Starts the timer
+---@field Pause function: Pause the timer
+---@field Unpause function: Unpause the timer
+
 local timer = {}
 
 function timer:New(duration, call, loop)
@@ -20,9 +27,11 @@ function timer:New(duration, call, loop)
     return o
 end
 
+---Starts the timer
+---@return nil
 function timer:Start()
     if self.Started == true then return end
-
+    
     self.Started = true
     self.StartTime = love.timer.getTime()
 end

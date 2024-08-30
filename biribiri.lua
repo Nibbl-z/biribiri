@@ -4,6 +4,11 @@ local Timer = require("biribiri.timer")
 
 local activeTimers = {}
 
+--- Creates a timer and then returns it
+---@param duration number How many seconds until the function should be called?
+---@param call function The function to call after the duration ends
+---@param loop boolean? Should the timer loop after ending?
+---@return Timer
 function biribiri:CreateTimer(duration, call, loop)
     local t = Timer:New(duration, call, loop or false)
     
@@ -12,6 +17,11 @@ function biribiri:CreateTimer(duration, call, loop)
     return t
 end
 
+--- Creates a timer, starts it, and then returns it
+---@param duration number How many seconds until the function should be called?
+---@param call function The function to call after the duration ends
+---@param loop boolean? Should the timer loop after ending?
+---@return Timer
 function biribiri:CreateAndStartTimer(duration, call, loop)
     local t = Timer:New(duration, call, loop or false)
     

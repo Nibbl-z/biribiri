@@ -1,7 +1,7 @@
 require "biribiri"
 
 function love.load()
-    local timer = biribiri:CreateTimer(2, function ()
+    timer = biribiri:CreateTimer(2, function ()
         print("gggup")
     end)
     
@@ -9,7 +9,19 @@ function love.load()
         print("Hello!!")
     end, true)
     
+    biribiri:CreateAndStartTimer(0.25, function ()
+        print("ha")
+    end)
+
     timer:Start()
+end
+
+function love.keypressed(key)
+    if key == "e" then
+        timer:Pause()
+    elseif key == "q" then
+        timer:Unpause()
+    end
 end
 
 function love.update(dt)
