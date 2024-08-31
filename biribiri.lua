@@ -1,6 +1,6 @@
 biribiri = {}
 
-Sprites = {}
+assets = {}
 
 local Timer = require("biribiri.timer")
 
@@ -187,16 +187,14 @@ local function LoadSpriteFolder(directory)
         
         if info.type == "file" then
             local sprite = nil
-
-            local status, err = pcall(function ()
+            
+            local status = pcall(function ()
                 sprite = love.graphics.newImage(directory.."/"..v)
             end)
 
-            print(status, err)
-
             if status == true then
                 print(v, sprite)
-                Sprites[directory.."/"..v] = sprite
+                assets[directory.."/"..v] = sprite
             end
         elseif info.type == "directory" then
             LoadSpriteFolder(directory.."/"..v)
@@ -204,8 +202,43 @@ local function LoadSpriteFolder(directory)
     end
 end
 
---- Loads a folder of images into the global Sprites table.
+local function LoadAudioFolder(directory, sourceType)
+    for _, v in ipairs(love.filesystem.getDirectoryItems(directory)) do
+        local info = love.filesystem.getInfo(directory.."/"..v)
+        
+        if info.type == "file" then
+            local source = nil
+            
+            local status = pcall(function ()
+                source = love.audio.newSource(directory.."/"..v, sourceType)
+            end)
+            
+            if status == true then
+                print(v, source)
+                assets[directory.."/"..v] = source
+            end
+        elseif info.type == "directory" then
+            LoadAudioFolder(directory.."/"..v, sourceType)
+        end
+    end
+end
+
+--- Loads a folder of images into the global `assets` table.
 ---@param directory string The directory to load images from
-biribiri.LoadSprites = function (directory)
+function biribiri:LoadSprites(directory)
     LoadSpriteFolder(directory)
+end
+
+--- Loads a folder of audios into the global `assets` table.
+---@param directory string The directory to load images from
+---@param sourceType "static"|"stream"|"queue" Type of audio source to create
+function biribiri:LoadAudio(directory, sourceType)
+    LoadAudioFolder(directory, sourceType)
+end
+
+--- Sets an audio's source type in the `assets` folder.
+---@param path string The source to change the source type
+---@param sourceType "static"|"stream"|"queue" Type of audio source to set
+function biribiri:SetAudioSourceType(path, sourceType)
+    assets[path] = love.audio.newSource(path, sourceType)
 end
