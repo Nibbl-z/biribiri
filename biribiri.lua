@@ -223,6 +223,28 @@ local function LoadAudioFolder(directory, sourceType)
     end
 end
 
+local function LoadFontFolder(directory, size)
+    size = size or 12
+    for _, v in ipairs(love.filesystem.getDirectoryItems(directory)) do
+        local info = love.filesystem.getInfo(directory.."/"..v)
+        
+        if info.type == "file" then
+            local font = nil
+            
+            local status = pcall(function ()
+                font = love.graphics.newFont(directory.."/"..v, size)
+            end)
+            
+            if status == true then
+                print(v, font)
+                assets[directory.."/"..v] = font
+            end
+        elseif info.type == "directory" then
+            LoadFontFolder(directory.."/"..v, size)
+        end
+    end
+end
+
 --- Loads a folder of images into the global `assets` table.
 ---@param directory string The directory to load images from
 function biribiri:LoadSprites(directory)
@@ -230,7 +252,7 @@ function biribiri:LoadSprites(directory)
 end
 
 --- Loads a folder of audios into the global `assets` table.
----@param directory string The directory to load images from
+---@param directory string The directory to load audio from
 ---@param sourceType "static"|"stream"|"queue" Type of audio source to create
 function biribiri:LoadAudio(directory, sourceType)
     LoadAudioFolder(directory, sourceType)
@@ -241,4 +263,18 @@ end
 ---@param sourceType "static"|"stream"|"queue" Type of audio source to set
 function biribiri:SetAudioSourceType(path, sourceType)
     assets[path] = love.audio.newSource(path, sourceType)
+end
+
+--- Loads a folder of fonts into the global `assets` table.
+---@param directory string The directory to load fonts from
+---@param size? number Size for the font
+function biribiri:LoadAudio(directory, size)
+    LoadFontFolder(directory, size)
+end
+
+--- Sets a font's size in the `assets` folder.
+---@param path string The font to change the size of
+---@param size? number Size for the font
+function biribiri:SetFontSize(path, size)
+    assets[path] = love.graphics.newFont(path, size)
 end
