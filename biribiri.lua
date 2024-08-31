@@ -65,3 +65,64 @@ table.find = function (haystack, needle)
 
     return nil
 end
+
+math.clamp = function (number, min, max)
+    if number == nil then
+        error("Number was not provided!")
+    end
+    
+    if min > max then
+
+        error("max must be larger than min!")
+    end
+
+    return math.max(min, math.min(max, number))
+end
+
+math.round = function (number, multiple)
+    return math.floor(number / multiple + 0.5) * multiple
+end
+
+table.length = function (t)
+    local count = 0
+    
+    for _, _ in pairs(t) do
+        count = count + 1
+    end
+
+    return count
+end
+
+local function TableToString(t)
+    local str = "{"
+    
+    local index = 1
+    
+    for key, value in pairs(t) do
+        if type(key) ~= "number" then
+            str = str..string.format("[\"%s\"] = ", key)
+        end
+        
+        if type(value) ~= "table" then
+            str = str..value
+        else
+            str = str..TableToString(value)
+        end
+
+        if index == table.length(t) then
+            str = str.."}"
+        else
+            str = str..","
+        end
+
+        index = index + 1
+    end
+
+
+
+    return str
+end
+
+table.tostring = function(t)
+    return TableToString(t)
+end

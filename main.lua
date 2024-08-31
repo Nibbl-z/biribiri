@@ -13,12 +13,12 @@ function love.load()
         print("ha")
     end)
     
-    local mytable = {1,3,2}
+    local mytable = {1,3,2,{Sigma = "Skibidi"}}
     
     --for _, v in pairs(mytable) do print(v) end
     
     print(table.find(mytable, 3))
-    
+    print(table.tostring(mytable))
     table.clear(mytable)
     --for _, v in pairs(mytable) do print(v) end
 
