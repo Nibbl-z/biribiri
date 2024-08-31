@@ -20,7 +20,7 @@ function timer:New(duration, call, loop)
         PauseStart = 0,
         PausedDuration = 0
     }
-
+    
     setmetatable(o, self)
     self.__index = self
     

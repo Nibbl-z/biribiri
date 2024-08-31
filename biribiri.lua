@@ -1,5 +1,7 @@
 biribiri = {}
 
+Sprites = {}
+
 local Timer = require("biribiri.timer")
 
 local activeTimers = {}
@@ -31,6 +33,8 @@ function biribiri:CreateAndStartTimer(duration, call, loop)
     return t
 end
 
+--- Updates Biribiri's features. Call this function in `love.update`
+---@param dt number Delta Time
 function biribiri:Update(dt)
     for _, timer in ipairs(activeTimers) do
         if timer.Started and not timer.Paused and not timer.Finished then
@@ -122,13 +126,13 @@ local function TableToString(t)
         end
         
         if type(value) == "string" then
-            str = str.."\""..value.."\""
+            str = str.."\""..tostring(value).."\""
         elseif type(value) == "table" then
             str = str..TableToString(value)
         else
-            str = str..value
+            str = str..tostring(value)
         end
-
+        
         if index == table.length(t) then
             str = str.."}"
         else
@@ -158,4 +162,50 @@ biribiri.distance = function (x1, y1, x2, y2)
     local dx = x1 - x2
     local dy = y1 - y2
     return math.sqrt (dx * dx + dy * dy)
+end
+
+--- Checks if 2 rectangles collide.
+---@param x1 number Rectangle 1's X position
+---@param y1 number Rectangle 1's Y position
+---@param w1 number Rectangle 1's width
+---@param h1 number Rectangle 1's height
+---@param x2 number Rectangle 2's X position
+---@param y2 number Rectangle 2's Y position
+---@param w2 number Rectangle 2's width
+---@param h2 number Rectangle 2's height
+---@return boolean collides Did the two rectangles collide?
+biribiri.collision = function (x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2+w2 and
+        x2 < x1+w1 and
+        y1 < y2+h2 and
+        y2 < y1+h1
+end
+
+local function LoadSpriteFolder(directory)
+    for _, v in ipairs(love.filesystem.getDirectoryItems(directory)) do
+        local info = love.filesystem.getInfo(directory.."/"..v)
+        
+        if info.type == "file" then
+            local sprite = nil
+
+            local status, err = pcall(function ()
+                sprite = love.graphics.newImage(directory.."/"..v)
+            end)
+
+            print(status, err)
+
+            if status == true then
+                print(v, sprite)
+                Sprites[directory.."/"..v] = sprite
+            end
+        elseif info.type == "directory" then
+            LoadSpriteFolder(directory.."/"..v)
+        end
+    end
+end
+
+--- Loads a folder of images into the global Sprites table.
+---@param directory string The directory to load images from
+biribiri.LoadSprites = function (directory)
+    LoadSpriteFolder(directory)
 end

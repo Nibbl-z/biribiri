@@ -1,6 +1,8 @@
 require "biribiri"
 
 function love.load()
+    biribiri.LoadSprites("/img")
+    
     timer = biribiri:CreateTimer(2, function ()
         print("gggup")
     end)
@@ -17,12 +19,14 @@ function love.load()
     
     --for _, v in pairs(mytable) do print(v) end
     
-    print(table.find(mytable, 3))
-    print(table.tostring(mytable))
+    --print(table.find(mytable, 3))
+    --print(table.tostring(mytable))
     table.clear(mytable)
     --for _, v in pairs(mytable) do print(v) end
-
+    
     timer:Start()
+
+    print(table.tostring(Sprites))    
 end
 
 function love.keypressed(key)
@@ -34,5 +38,13 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
+    
+
     biribiri:Update(dt)
+end
+
+function love.draw()
+    love.graphics.draw(Sprites["/img/WHAT.png"])
+    
+    love.graphics.draw(Sprites["/img/these/andthose/angyfoo.jpg"], 200, 200, 50, 0.2, 0.2)
 end
