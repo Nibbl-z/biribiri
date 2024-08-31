@@ -49,6 +49,8 @@ function biribiri:Update(dt)
     end
 end
 
+--- Clears a table
+--- @param t table The table to clear
 table.clear = function (t)
     for _, v in pairs(t) do
         table.remove(t, #t - 1)
@@ -56,6 +58,10 @@ table.clear = function (t)
     table.remove(t, 1)
 end
 
+--- Finds a value inside of a table, returns the index if it is found, and returns nil otherwise
+--- @param haystack table The table to search
+--- @param needle any The value to look for
+--- @return number|nil
 table.find = function (haystack, needle)
     for i, v in pairs(haystack) do
         if v == needle then
@@ -66,6 +72,11 @@ table.find = function (haystack, needle)
     return nil
 end
 
+--- Returns number between the min and max boundaries
+---@param number number The number to clamp
+---@param min number The minimum value of the number
+---@param max number The maximum value of the number
+---@return number clampedNumber
 math.clamp = function (number, min, max)
     if number == nil then
         error("Number was not provided!")
@@ -79,10 +90,18 @@ math.clamp = function (number, min, max)
     return math.max(min, math.min(max, number))
 end
 
+--- Rounds the number to the nearest multiple provided or the nearest integer if a multiple is not provided
+---@param number number The number to round
+---@param multiple? number The multiple to round the number to
+---@return number number
 math.round = function (number, multiple)
+    multiple = multiple or 1
     return math.floor(number / multiple + 0.5) * multiple
 end
 
+--- Returns the length of a table. You can use this instead of # on key-value tables because for whatever reason, # doesn't work on key-value tables.
+---@param t table Table to get the length of
+---@return number count
 table.length = function (t)
     local count = 0
     
@@ -95,7 +114,6 @@ end
 
 local function TableToString(t)
     local str = "{"
-    
     local index = 1
     
     for key, value in pairs(t) do
@@ -103,10 +121,12 @@ local function TableToString(t)
             str = str..string.format("[\"%s\"] = ", key)
         end
         
-        if type(value) ~= "table" then
-            str = str..value
-        else
+        if type(value) == "string" then
+            str = str.."\""..value.."\""
+        elseif type(value) == "table" then
             str = str..TableToString(value)
+        else
+            str = str..value
         end
 
         if index == table.length(t) then
@@ -118,11 +138,24 @@ local function TableToString(t)
         index = index + 1
     end
 
-
-
     return str
 end
 
+--- Serializes the table provided as a string, e.g. to print a table and see it's values instead of the memory location
+---@param t table Table to convert to a string
+---@return string serializedTable
 table.tostring = function(t)
     return TableToString(t)
+end
+
+--- Gets the X and Y distance between two XY coordinates.
+---@param x1 number X coordinate 1
+---@param y1 number Y coordinate 1
+---@param x2 number X coordinate 2
+---@param y2 number Y coordinate 2
+---@return number distance Distance
+biribiri.distance = function (x1, y1, x2, y2)
+    local dx = x1 - x2
+    local dy = y1 - y2
+    return math.sqrt (dx * dx + dy * dy)
 end

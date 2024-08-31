@@ -13,7 +13,7 @@ function love.load()
         print("ha")
     end)
     
-    local mytable = {1,3,2,{Sigma = "Skibidi"}}
+    local mytable = {1,3,2,{["Working"] = {"So cool","and awesome","happy"}}}
     
     --for _, v in pairs(mytable) do print(v) end
     
