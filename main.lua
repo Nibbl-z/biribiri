@@ -18,16 +18,9 @@ function love.load()
     
     local mytable = {1,3,2,{["Working"] = {"So cool","and awesome","happy"}}}
     
-    --for _, v in pairs(mytable) do print(v) end
-    
-    --print(table.find(mytable, 3))
-    --print(table.tostring(mytable))
-    table.clear(mytable)
-    --for _, v in pairs(mytable) do print(v) end
-    
     timer:Start()
 
-    print(table.tostring(assets))    
+    print(table.tostring(mytable))    
 end
 
 function love.keypressed(key)
