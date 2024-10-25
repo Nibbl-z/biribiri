@@ -22,3 +22,6 @@ Load the `img` folder into the global `assets` table, which can be used in `love
 ```lua
 biribiri:LoadSprites("img")
 ```
+### In Practice
+
+This library was used in my [recreation of the Play-Yan media player](https://github.com/Nibbl-z/play-yan) to sequence all the animations and transitions, which was much more enjoyable than making a bunch of timer variables, which is what I would do in previous projects!
